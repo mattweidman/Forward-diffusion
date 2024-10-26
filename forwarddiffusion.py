@@ -20,5 +20,9 @@ for i in range(TOTAL_TIME_STEPS):
     noise = np.random.normal(size=(original_img.shape))
     img = math.sqrt(alpha_bar_noise_schedule[i]) * original_img + \
         math.sqrt(1-alpha_bar_noise_schedule[i]) * noise
+    # Clip within RGB bounds. According to https://arxiv.org/pdf/2102.09672, there
+    # are "singularities" near t=T if you let values get too close to 1, so we
+    # clip at 0.999. Don't ask me what singularities are.
+    img = img.clip(min=0, max=0.999)
     ax[i].imshow(img)
 plt.show()
