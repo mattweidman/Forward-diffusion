@@ -4,7 +4,7 @@ import math
 import matplotlib.pyplot as plt
 import numpy as np
 
-TOTAL_TIME_STEPS = 10
+TOTAL_TIME_STEPS = 100
 cosine_offset = 1e-4 # Offset prevents noise from getting too small near t=0
 alpha_bar_noise_schedule = [
     # Cosine schedule from https://arxiv.org/pdf/2102.09672
@@ -14,7 +14,8 @@ alpha_bar_noise_schedule = [
 print(alpha_bar_noise_schedule)
 
 original_img = np.asarray(Image.open('anakin_sand.jpg')) / 256
-fig, ax = plt.subplots(ncols=TOTAL_TIME_STEPS)
+ROW_LENGTH = 10
+fig, ax = plt.subplots(ncols=ROW_LENGTH, nrows=TOTAL_TIME_STEPS // ROW_LENGTH)
 ax = ax.flatten()
 for i in range(TOTAL_TIME_STEPS):
     noise = np.random.normal(size=(original_img.shape))
@@ -25,4 +26,5 @@ for i in range(TOTAL_TIME_STEPS):
     # clip at 0.999. Don't ask me what singularities are.
     img = img.clip(min=0, max=0.999)
     ax[i].imshow(img)
+    ax[i].set_axis_off()
 plt.show()
