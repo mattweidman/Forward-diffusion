@@ -5,20 +5,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 TOTAL_TIME_STEPS = 10
-MIN_NOISE = 0
-MAX_NOISE = 1
-noise_schedule = [
-    # TODO: Switch to a cosine noise schedule as in https://arxiv.org/pdf/2102.09672
-    (1-t/(TOTAL_TIME_STEPS-1)) * MIN_NOISE + (t/(TOTAL_TIME_STEPS-1)) * MAX_NOISE
+cosine_offset = 1e-4 # Offset prevents noise from getting too small near t=0
+alpha_bar_noise_schedule = [
+    # Cosine schedule from https://arxiv.org/pdf/2102.09672
+    math.cos((t/TOTAL_TIME_STEPS + cosine_offset) / (1 + cosine_offset) * math.pi/2)**2
     for t in range(TOTAL_TIME_STEPS)
 ]
-print(noise_schedule)
-
-last_alpha_bar = 1
-alpha_bar_noise_schedule = []
-for beta in noise_schedule:
-    last_alpha_bar = last_alpha_bar * (1 - beta)
-    alpha_bar_noise_schedule.append(last_alpha_bar)
 print(alpha_bar_noise_schedule)
 
 original_img = np.asarray(Image.open('anakin_sand.jpg')) / 256
