@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 TOTAL_TIME_STEPS = 100
-COSINE_OFFSET = 1e-4 # Offset prevents noise from getting too small near t=0
+COSINE_OFFSET = 0.008 # Offset prevents noise from getting too small near t=0
 alpha_bar_noise_schedule = [
     # Cosine schedule from https://arxiv.org/pdf/2102.09672
     math.cos((t/TOTAL_TIME_STEPS + COSINE_OFFSET) / (1 + COSINE_OFFSET) * math.pi/2)**2
